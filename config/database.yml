@@ -6,6 +6,7 @@
 development:
   adapter: postgresql
   database: ticketee4_development
+  host: localhost
   username: postgres
   password: postgres
 
@@ -15,11 +16,13 @@ development:
 test:
   adapter: postgresql
   database: ticketee4_test
+  host: localhost
   username: postgres
   password: postgres
 
 production:
   adapter: postgresql
   database: ticketee4_production
+  host: localhost
   username: postgres
   password: postgres
