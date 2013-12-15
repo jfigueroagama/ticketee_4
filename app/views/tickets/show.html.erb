@@ -2,3 +2,6 @@
 	<h2><%= @ticket.title %></h2>
 	<%= simple_format(@ticket.description) %>	
 </div>
+<!-- We use the Array argument passed to link_to method which is interpreted as edit_project_ticket_path(@project, @ticket) -->
+<%= link_to "Edit Ticket", [:edit, @project, @ticket]%>
+<%= link_to "Delete Ticket", [@project, @ticket], method: :delete, data: { confirm: "Are you sure?"} %>

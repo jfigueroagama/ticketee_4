@@ -4,3 +4,12 @@
 <%= link_to "Delete Project", project_path(@project), method: :delete, data: {confirm: "Are you sure?"} %>
 <!--Using nested routing helpers. Tickets are created scoped by @project -->
 <%= link_to "New Ticket", new_project_ticket_path(@project) %>
+<!-- List of project's tickets -->
+<ul id="tickets">
+	<% @project.tickets.each do |ticket| %>
+	<li>
+		<!-- [@project, ticket] displays to the ticket show page -->
+		#<%= ticket.id %> - <%= link_to ticket.title, [@project, ticket] %>
+	</li>
+	<% end %>
+</ul>
