@@ -1,5 +1,6 @@
 <div id="ticket">
 	<h2><%= @ticket.title %></h2>
+	<span id="author">Created by <%= @ticket.user.email %></span>
 	<%= simple_format(@ticket.description) %>	
 </div>
 <!-- We use the Array argument passed to link_to method which is interpreted as edit_project_ticket_path(@project, @ticket) -->

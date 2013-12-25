@@ -1,6 +1,7 @@
 class TicketsController < ApplicationController
   before_action :set_project
   before_action :set_ticket, only: [:show, :edit, :update, :destroy]
+  before_action :require_signin!, except: [:show, :index]
   
   def new
     @ticket = @project.tickets.build
@@ -9,6 +10,8 @@ class TicketsController < ApplicationController
   def create
     # strong params is an addition on Rails 4
     @ticket = @project.tickets.build(ticket_params)
+    # here we use the setter method for ticket's user
+    @ticket.user = current_user
     if @ticket.save
       flash[:notice] = "Ticket has been created."
       redirect_to [@project, @ticket]
