@@ -13,3 +13,14 @@ end
 RSpec.configure do |c|
   c.include AuthenticationHelpers, type: :feature
 end
+
+module AuthHelpers
+  def sign_in(user)
+    session[:user_id] = user.id
+  end
+end
+
+# This includes the AuthHelpers in all the specs for controllers
+RSpec.configure do |c|
+  c.include AuthHelpers, type: :controller
+end

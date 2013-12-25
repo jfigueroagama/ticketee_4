@@ -3,7 +3,8 @@ require 'spec_helper'
 feature "Creating Projects" do
   
   before do
-    visit '/'
+    sign_in_as!(FactoryGirl.create(:admin_user))
+    visit root_path
     click_link "New Project"
   end
   

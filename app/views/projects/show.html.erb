@@ -1,7 +1,9 @@
 <% title(@project.name, "Projects") %>
 <h2><%= @project.name %></h2>
-<%= link_to "Edit Project", edit_project_path(@project) %>
-<%= link_to "Delete Project", project_path(@project), method: :delete, data: {confirm: "Are you sure?"} %>
+<% admins_only do %>
+	<%= link_to "Edit Project", edit_project_path(@project) %>
+	<%= link_to "Delete Project", project_path(@project), method: :delete, data: {confirm: "Are you sure?"} %>
+<% end %>
 <!--Using nested routing helpers. Tickets are created scoped by @project -->
 <%= link_to "New Ticket", new_project_ticket_path(@project) %>
 <!-- List of project's tickets -->
