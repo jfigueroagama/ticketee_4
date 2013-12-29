@@ -3,16 +3,19 @@ require 'spec_helper'
 feature "Viewing Tickets" do
   before do
     user = FactoryGirl.create(:user)
-    textmate_2 = FactoryGirl.create(:project, name: "TextMate 2")   
+    textmate_2 = FactoryGirl.create(:project, name: "TextMate 2")
+    define_permission!(user, "view", textmate_2)   
     ticket1 = FactoryGirl.create(:ticket, project: textmate_2, title: "Make it shiny!", description: "Gradients!")
     ticket1.update(user: user)
     # ticket1.user = user
     # ticket1.save   
     internet_explorer = FactoryGirl.create(:project, name: "Internet Explorer")
+    define_permission!(user, "view", internet_explorer)
     ticket2 = FactoryGirl.create(:ticket, project: internet_explorer, title: "Standards compliance", description: "It is not a joke")
     ticket2.update(user: user)
     # ticket2.user = user
     # ticket2.save
+    sign_in_as!(user)
     visit root_path
   end
   

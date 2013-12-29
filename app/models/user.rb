@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
   has_secure_password
   has_many :tickets
+  has_many :permissions
   
   validates :email, presence: true
   
