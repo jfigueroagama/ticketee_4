@@ -1,0 +1,7 @@
+<%= link_to "New User", new_admin_user_path %>
+<ul id="users">
+	<% @users.each do |user| %>
+		<!--Rails uses the symbol as part of the path make it admin_user_path -->
+		<li><%= link_to user, [:admin, user] %></li>
+	<% end %>
+</ul>

@@ -12,6 +12,12 @@ Ticketee4::Application.routes.draw do
 
   resources :users
   
+  # admin namespace
+  namespace :admin do
+    root :to => "base#index"
+    resources :users
+  end
+  
   get '/signin', to: 'sessions#new'
   post '/signin', to: 'sessions#create'
   
