@@ -4,6 +4,8 @@ class TicketsController < ApplicationController
   before_action :require_signin!#, except: [:show, :index]
   before_action :set_project
   before_action :set_ticket, only: [:show, :edit, :update, :destroy]
+  # The authorization to create tickets is handled by cancan
+  before_action :authorize_create!, only: [:new, :create]
   
   
   def new
@@ -59,5 +61,14 @@ class TicketsController < ApplicationController
   
   def set_ticket
     @ticket = @project.tickets.find(params[:id])
+  end
+  
+  def authorize_create!
+    # cannot? is a method defined by cancan gem, Returns true or false whether the user can do
+    # a particular action. This method an can? may be used in controllers and views
+    if !current_user.admin? && cannot?("create tickets".to_sym, @project)
+      flash[:alert] = "You cannot create tickets on this project."
+      redirect_to @project
+    end
   end
 end

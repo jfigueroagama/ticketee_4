@@ -4,7 +4,11 @@ feature "Creating Tickets" do
   before do
     project = FactoryGirl.create(:project)
     user = FactoryGirl.create(:user)
+    # define_permission! method is defined in the authorization_helpers.rf inside spec/support/
+    # it creates a permission record for user, action, project parameters => in the test DB
+    # this has to be changed to the permissions model (cancan?)
     define_permission!(user, "view", project)
+    define_permission!(user, "create tickets", project)
     @email = user.email
     sign_in_as!(user)
     
