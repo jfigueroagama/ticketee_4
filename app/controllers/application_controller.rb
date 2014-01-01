@@ -14,13 +14,14 @@ class ApplicationController < ActionController::Base
   helper_method :require_signin!
   
   def current_user
+    # The user who is signed in is in the session hash
     @current_user ||= User.find(session[:user_id]) if session[:user_id]
   end
   helper_method :current_user
   
   def authorize_admin!
     # We use require_admin! method to enforce authentication
-    require_signin!
+    #require_signin!
     
     unless current_user.admin?
       flash[:alert] = "You must be an admin to do that."

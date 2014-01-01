@@ -1,10 +1,12 @@
 class ProjectsController < ApplicationController
-  before_action :authorize_admin!, except: [:show, :index]
-  before_action :require_signin!, only: [:show]
+  before_action :require_signin!#, only: [:show, :index] ALL ACTION IN PROJECT CONTROLLER REQUIRE SIGN IN
+  before_action :authorize_admin!, except: [:show, :index] # :authorize_admin! uses :require_signin!
   before_action :set_project, only: [:show, :edit, :update, :destroy]
   
   def index
-    @projects = Project.all
+    # We should restrict the list of projects thst the user is allowed to see
+    # The user must be signed in before the index action otherwise we do not have current user
+    @projects = Project.for(current_user)
   end
   
   def new
@@ -55,11 +57,13 @@ class ProjectsController < ApplicationController
   end
   
   def set_project
-  if current_user.admin?
-    @project = Project.find(params[:id])
-  else
-    @project = Project.viewable_by(current_user).find(params[:id])
-  end
+  #if current_user.admin?
+    #@project = Project.find(params[:id])
+  #else
+    #@project = Project.viewable_by(current_user).find(params[:id])
+  #end
+  @project = Project.for(current_user).find(params[:id])
+  # If the project is not found raises an exception which is rescue and redirected to project index => root_path
   rescue ActiveRecord::RecordNotFound
     flash[:alert] = "The project you were looking for could not be found."
     redirect_to projects_path
