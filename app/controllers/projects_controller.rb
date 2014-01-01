@@ -66,7 +66,7 @@ class ProjectsController < ApplicationController
   # If the project is not found raises an exception which is rescue and redirected to project index => root_path
   rescue ActiveRecord::RecordNotFound
     flash[:alert] = "The project you were looking for could not be found."
-    redirect_to projects_path
+    redirect_to root_path
   end
   
 end
