@@ -4,5 +4,9 @@
 	<%= simple_format(@ticket.description) %>	
 </div>
 <!-- We use the Array argument passed to link_to method which is interpreted as edit_project_ticket_path(@project, @ticket) -->
-<%= link_to "Edit Ticket", [:edit, @project, @ticket]%>
-<%= link_to "Delete Ticket", [@project, @ticket], method: :delete, data: { confirm: "Are you sure?"} %>
+<% authorized?("edit tickets".to_sym, @project) do %>
+	<%= link_to "Edit Ticket", [:edit, @project, @ticket]%>
+<% end %>
+<% authorized?("delete tickets".to_sym, @project) do %>
+	<%= link_to "Delete Ticket", [@project, @ticket], method: :delete, data: { confirm: "Are you sure?"} %>
+<% end %>
