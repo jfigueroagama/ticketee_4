@@ -15,9 +15,17 @@ Ticketee4::Application.routes.draw do
   # admin namespace
   namespace :admin do
     root :to => "base#index"
-    resources :users
+    resources :users do
+      resources :permissions
+      # this route will respond to PUT requests
+      # the controller and action are defined by to:
+      # the as: defines the path to that action as set_permissions,
+      # we can use admin_user_set_permissions_path
+      put "permissions", to: "permissions#set", as: "set_permissions"
+    end
   end
   
+  delete '/signout', to: 'sessions#destroy'
   get '/signin', to: 'sessions#new'
   post '/signin', to: 'sessions#create'
   
