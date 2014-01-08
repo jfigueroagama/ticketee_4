@@ -14,6 +14,10 @@ class TicketsController < ApplicationController
     @ticket = @project.tickets.build
   end
   
+  def show
+    @comment = @ticket.comments.build
+  end
+  
   def create
     # strong params is an addition on Rails 4
     @ticket = @project.tickets.build(ticket_params)
