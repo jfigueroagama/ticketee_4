@@ -4,9 +4,10 @@ class SessionsController < ApplicationController
   end
   
   def create
-    user = User.where(name: params[:signin][:name]).first
+    # We need the [:signin][:email] to define the route for params => no session model
+    user = User.where(email: params[:signin][:email]).first
     if user && user.authenticate(params[:signin][:password])
-      # when the user signs in we save its id in the session hash
+      # When the user signs in we save its id in the session hash
       session[:user_id] = user.id
       flash[:notice] = "Signed in successfully."
       redirect_to root_url

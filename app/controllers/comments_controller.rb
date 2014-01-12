@@ -9,6 +9,7 @@ class CommentsController < ApplicationController
       flash[:notice] = "Comment has been created."
       redirect_to [@ticket.project, @ticket]
     else
+      @states = State.all
       flash[:alert] = "Comment has not been created."
       # template: options renders a template of another controller => tickets
       # render method does not call the action, so the code within the show
@@ -20,7 +21,7 @@ class CommentsController < ApplicationController
   private
   
   def comments_params
-    params.require(:comment).permit(:text)
+    params.require(:comment).permit(:text, :state_id)
   end
   
   def set_ticket

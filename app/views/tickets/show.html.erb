@@ -1,11 +1,13 @@
 <div id="ticket">
 	<h2><%= @ticket.title %></h2>
 	<span id="author">Created by <%= @ticket.user.email %></span>
+	<!-- @ticket.state method returns a state object which is displayed using the _state.html.erb partial -->
+	<%= render @ticket.state if @ticket.state %>
 	<%= simple_format(@ticket.description) %>	
 </div>
 <!-- We use the Array argument passed to link_to method which is interpreted as edit_project_ticket_path(@project, @ticket) -->
 <% authorized?("edit tickets".to_sym, @project) do %>
-	<%= link_to "Edit Ticket", [:edit, @project, @ticket]%>
+	<%= link_to "Edit Ticket", [:edit, @project, @ticket] %>
 <% end %>
 <% authorized?("delete tickets".to_sym, @project) do %>
 	<%= link_to "Delete Ticket", [@project, @ticket], method: :delete, data: { confirm: "Are you sure?"} %>
