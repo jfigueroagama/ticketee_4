@@ -1,5 +1,12 @@
 <!-- creates a div tag and a id=comments -->
 <%= div_for(comment) do %>
 	<h4><%= comment.user %></h4>
+	<!--the state_for method is defined in the TicketsHelper,since methods in helpers can be access by views & controllers -->
+	State: <!--<%= state_for(comment) %>-->
+	<% if comment.previous_state && comment.previous_state != comment.state %>
+		<%= comment.previous_state.name %> &rarr; <%= comment.state.name %>
+	<% else %>
+		<%= comment.state.name %>
+	<% end %>
 	<%= simple_format(comment.text) %>
 <% end %>
