@@ -42,9 +42,11 @@ feature "Creating comments" do
     within("#ticket") do
       ticket.state.name.should eql("Open")
       page.should have_content("Open")
+      expect(page).to have_content("Open")
     end
     within("#comments") do
       page.should have_content("State: Open")
+      expect(page).to have_content("State: Open")
     end
   end
   

@@ -1,0 +1,11 @@
+<%= link_to "New State", new_admin_state_path %>
+
+<ul id="states">
+	<% for state in @states %>
+		<li id="state_<%= state.id %>">
+			<%= state.name %> | <%= link_to "Make default", make_default_admin_state_path(state) %>	| 
+			<%= link_to "Delete state", admin_state_path(state), method: :delete, 
+			data: { confirm: "Are you sure that you want to delete this state?"} %>
+		</li>
+	<% end %>
+</ul>

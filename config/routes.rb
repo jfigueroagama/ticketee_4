@@ -27,6 +27,11 @@ Ticketee4::Application.routes.draw do
       # we can use admin_user_set_permissions_path
       put "permissions", to: "permissions#set", as: "set_permissions"
     end
+    resources :states do
+      member do
+        get :make_default
+      end
+    end
   end
   
   delete '/signout', to: 'sessions#destroy'
