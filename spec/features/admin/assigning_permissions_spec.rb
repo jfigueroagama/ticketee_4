@@ -4,7 +4,9 @@ feature "Assigning Permissions" do
   let!(:admin) { FactoryGirl.create(:admin_user) }
   let!(:user) { FactoryGirl.create(:user) }
   let!(:project) { FactoryGirl.create(:project) }
-  let!(:ticket) { FactoryGirl.create(:ticket, project: project, user: user) }
+  let!(:state_before) { FactoryGirl.create(:state, name: "Open") }
+  let!(:state_after) { FactoryGirl.create(:state, name: "New") }
+  let!(:ticket) { FactoryGirl.create(:ticket, project: project, user: user, state: state_before) }
   
   before do
     sign_in_as!(admin) 
@@ -70,4 +72,24 @@ feature "Assigning Permissions" do
     
     expect(page).to have_content("Ticket has been deleted.")
   end
+  
+  scenario "Changing states for a ticket" do
+    check_permission_box "view", project
+    check_permission_box "change_states", project
+    click_button "Update"
+    click_link "Sign out"
+    
+    sign_in_as!(user)
+    click_link project.name
+    click_link ticket.title
+    fill_in "Text", with: "Opening this ticket."
+    select "New", :from => "State"
+    click_button "Create Comment"
+    
+    page.should have_content("Comment has been created.")
+    within("#ticket") do
+      page.should have_content("New")
+    end
+  end
+  
 end
