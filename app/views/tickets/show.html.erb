@@ -4,7 +4,8 @@
 	<!-- @ticket.state method returns a state object which is displayed using the _state.html.erb partial -->
 	<br />
 	<%= @ticket.state.name if @ticket.state %>
-	<%= simple_format(@ticket.description) %>	
+	<%= simple_format(@ticket.description) %>
+	<div id="tags"><%= render @ticket.tags %></div>	
 </div>
 <!-- We use the Array argument passed to link_to method which is interpreted as edit_project_ticket_path(@project, @ticket) -->
 <% authorized?("edit tickets".to_sym, @project) do %>

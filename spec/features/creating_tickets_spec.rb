@@ -55,4 +55,17 @@ feature "Creating Tickets" do
     expect(page).to have_content("Ticket has not been created.")
     expect(page).to have_content("Description is too short")
   end
+  
+  scenario "creating a ticket with tags" do
+    fill_in "Title", with: "Non-standard compliance"
+    fill_in "Description", with: "My pages are ugly!"
+    fill_in "Tag names", with: "browser visual"
+    click_button "Create Ticket"
+    
+    expect(page).to have_content("Ticket has been created.")
+    within("#ticket #tags") do
+      page.should have_content("browser")
+      page.should have_content("visual")
+    end
+  end
 end
