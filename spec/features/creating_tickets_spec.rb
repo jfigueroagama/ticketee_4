@@ -9,6 +9,7 @@ feature "Creating Tickets" do
     # this has to be changed to the permissions model (cancan?)
     define_permission!(user, "view", project)
     define_permission!(user, "create tickets", project)
+    define_permission!(user, "tag", project)
     @email = user.email
     sign_in_as!(user)
     
@@ -59,7 +60,7 @@ feature "Creating Tickets" do
   scenario "creating a ticket with tags" do
     fill_in "Title", with: "Non-standard compliance"
     fill_in "Description", with: "My pages are ugly!"
-    fill_in "Tag names", with: "browser visual"
+    fill_in "Tags", with: "browser visual"
     click_button "Create Ticket"
     
     expect(page).to have_content("Ticket has been created.")

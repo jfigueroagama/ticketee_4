@@ -20,6 +20,11 @@ class TicketsController < ApplicationController
   end
   
   def create
+    # we erase tag_names from params for a user without permission to create tags
+    # we check the user permissions with the cancan cannot? method
+    if !current_user.admin? && cannot?("tag".to_sym, @project)
+      params[:ticket].delete(:tag_names)
+    end
     # strong params is an addition on Rails 4
     @ticket = @project.tickets.build(ticket_params)
     # here we use the setter method for ticket's user

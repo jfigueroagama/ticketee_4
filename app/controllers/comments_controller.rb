@@ -3,11 +3,7 @@ class CommentsController < ApplicationController
   before_action :set_ticket
   
   def create
-    # we erase state_id from params for a user without permission to change states
-    # we check the user permissions with the cancan cannot? method
-    if !current_user.admin? && cannot?("change states".to_sym, @ticket.project)
-      params[:comment].delete(:state_id)
-    end
+    sanitize_parameters!
     @comment = @ticket.comments.build(comments_params)
     @comment.user = current_user
     if @comment.save
@@ -25,8 +21,21 @@ class CommentsController < ApplicationController
   
   private
   
+  def sanitize_parameters!
+    # we erase state_id from params for a user without permission to change states
+    # we check the user permissions with the cancan cannot? method
+    if !current_user.admin? && cannot?("change states".to_sym, @ticket.project)
+      params[:comment].delete(:state_id)
+    end
+    # we erase tag_names from params for a user without permission to create tags
+    # we check the user permissions with the cancan cannot? method
+    if !current_user.admin? && cannot?("tag".to_sym, @ticket.project)
+      params[:comment].delete(:tag_names)
+    end
+  end
+  
   def comments_params
-    params.require(:comment).permit(:text, :state_id)
+    params.require(:comment).permit(:text, :state_id, :tag_names)
   end
   
   def set_ticket

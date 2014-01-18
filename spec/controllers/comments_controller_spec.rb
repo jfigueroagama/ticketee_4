@@ -21,5 +21,22 @@ describe CommentsController do
       ticket.state.should eql(nil) 
     end
   end
+  
+  context "A user without permission to set a state" do
+    before do
+      sign_in(user)
+    end
+    
+    it "cannot tag a ticket when creating a comment" do
+      post :create, { comment: {text: "tag!", tag_names: "one"}, ticket_id: ticket.id }
+      # Since create action created a new comment, we use reload to fetch
+      # the ticket again from the DB and update the object's attributes
+      ticket.reload
+      
+      ticket.tags.should be_empty 
+    end
+  end
+  
+  
 
 end
