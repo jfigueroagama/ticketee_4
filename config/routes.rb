@@ -12,6 +12,11 @@ Ticketee4::Application.routes.draw do
   
   resources :tickets do
     resources :comments
+    resources :tags do
+      member do
+        delete :remove # Allows to define a new action in the tags controller => remove
+      end
+    end
   end
 
   resources :users

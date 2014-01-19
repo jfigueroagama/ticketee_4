@@ -1,1 +1,8 @@
-<span class="tag"><%= tag.name %></span>
+<span class="tag">
+	<!-- We use parameterize method to get delete-name -of-the tag link -->
+	<!-- :remote => true allow us to use an asynchronous call  -->
+	<% if can?("tag".to_sym, @ticket.project) || current_user.admin? %>
+		<%= link_to "x", remove_ticket_tag_path(@ticket, tag), :method => :delete, 
+		:remote => true, :id => "delete-#{tag.name.parameterize}" %>
+	<% end %> <%= tag.name %>
+</span>
