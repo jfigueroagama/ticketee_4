@@ -4,5 +4,7 @@
 	<% if can?("tag".to_sym, @ticket.project) || current_user.admin? %>
 		<%= link_to "x", remove_ticket_tag_path(@ticket, tag), :method => :delete, 
 		:remote => true, :id => "delete-#{tag.name.parameterize}" %>
-	<% end %> <%= tag.name %>
+	<% end %> <%= link_to tag.name, search_project_tickets_path(@ticket.project, :search => "tag:#{tag.name}") %>
+	<!-- The search_project_tickets_path generates the route to the search action in the TicketsController -->
+	<!-- The options for the search are passed as a parameters in params[:search] for the link_to helper -->
 </span>

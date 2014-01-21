@@ -7,14 +7,19 @@ Ticketee4::Application.routes.draw do
   
   # nested resource
   resources :projects do
-    resources :tickets
+    resources :tickets do
+      # We use collection because the search action will act on a collection of ticket objects
+      collection do
+        get :search
+      end
+    end
   end
   
   resources :tickets do
     resources :comments
     resources :tags do
       member do
-        delete :remove # Allows to define a new action in the tags controller => remove
+        delete :remove # Allows to define a new action in the tags controller => remove. Will act on one object
       end
     end
   end

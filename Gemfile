@@ -52,6 +52,9 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 # Use cancan
 gem 'cancan', '~> 1.6.10'
 
+# use searcher
+gem 'searcher', :git => "git://github.com/radar/searcher"
+
 # Use unicorn as the app server
 # gem 'unicorn'
 

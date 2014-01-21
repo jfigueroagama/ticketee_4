@@ -8,9 +8,15 @@
 <% authorized?("create tickets", @project) do %>
 	<%= link_to "New Ticket", new_project_ticket_path(@project) %>
 <% end %>
-<!-- List of project's tickets -->
+<!--Search form_tag -->
+<%= form_tag search_project_tickets_path(@project), method: :get do %>
+	<%= label_tag "search" %>
+	<%= text_field_tag "search", params[:search] %>
+	<%= submit_tag "Search" %>
+<% end %>
+<!-- List of project's tickets returned by search -->
 <ul id="tickets">
-	<% @project.tickets.each do |ticket| %>
+	<% @tickets.each do |ticket| %>
 	<li>
 		<!-- [@project, ticket] displays the ticket show page -->
 		#<%= ticket.id %> - <%= link_to ticket.title, [@project, ticket] %>
