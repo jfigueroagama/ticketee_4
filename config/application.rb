@@ -8,6 +8,9 @@ Bundler.require(:default, Rails.env)
 
 module Ticketee4
   class Application < Rails::Application
+    # We need to add the list of observers
+    config.active_record.observers = :comment_observer
+    
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.

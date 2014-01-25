@@ -44,6 +44,7 @@ group :test do
   gem 'selenium-webdriver', '~> 2.39.0'
   gem 'database_cleaner', '~> 1.2.0'
   gem 'factory_girl_rails', '~> 4.2.1'
+  gem 'email_spec'
 end
 
 # Use ActiveModel has_secure_password
@@ -54,6 +55,9 @@ gem 'cancan', '~> 1.6.10'
 
 # use searcher
 gem 'searcher', :git => "git://github.com/radar/searcher"
+
+# Rails observers
+gem 'rails-observers'
 
 # Use unicorn as the app server
 # gem 'unicorn'

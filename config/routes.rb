@@ -12,6 +12,10 @@ Ticketee4::Application.routes.draw do
       collection do
         get :search
       end
+      # We use member because the watch action will act on a single ticket object
+      member do
+        post :watch
+      end
     end
   end
   

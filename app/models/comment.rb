@@ -5,6 +5,7 @@ class Comment < ActiveRecord::Base
   before_create :set_previous_state
   after_create :set_ticket_state
   after_create :associate_tags_ticket
+  after_create :creator_watches_ticket
   
   # delegates methos allows to use the ticket association with project
   # taking advantange of the assocition between ticket and comment
@@ -39,6 +40,11 @@ class Comment < ActiveRecord::Base
       self.ticket.tags += tags
       self.ticket.save!
     end
+  end
+  
+  def creator_watches_ticket
+    # we add the user creator of the comment to the ticket watchers association
+    ticket.watchers << user
   end
   
 end

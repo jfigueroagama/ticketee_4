@@ -26,6 +26,10 @@ Ticketee4::Application.configure do
   # Disable request forgery protection in test environment.
   config.action_controller.allow_forgery_protection = false
 
+   # Don't care if the mailer can't send.
+  config.action_mailer.raise_delivery_errors = true
+  # Specify which domain to use for mailer URL's
+  config.action_mailer.default_url_options = { host: "localhost:3000" }
   # Tell Action Mailer not to deliver emails to the real world.
   # The :test delivery method accumulates sent emails in the
   # ActionMailer::Base.deliveries array.

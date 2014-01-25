@@ -7,6 +7,14 @@
 	<%= simple_format(@ticket.description) %>
 	<div id="tags"><%= render @ticket.tags %></div>	
 </div>
+<!-- We display the list of ticket watchers -->
+<span id="watchers">
+	<strong> Watchers:</strong>
+	<!--Since this will only appear in the Ticket views we should include this method in the TicketsHelper -->
+	<%= toggle_watching_button %>
+	<!-- to_sentence takes the array of emails and displays "user1@example.com user2@example.com"-->
+	<%= @ticket.watchers.map(&:email).to_sentence %>
+</span>
 <!-- We use the Array argument passed to link_to method which is interpreted as edit_project_ticket_path(@project, @ticket) -->
 <% authorized?("edit tickets".to_sym, @project) do %>
 	<%= link_to "Edit Ticket", [:edit, @project, @ticket] %>
