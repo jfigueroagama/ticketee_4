@@ -5,6 +5,13 @@ Ticketee4::Application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'projects#index'
   
+  # projects api routes
+  namespace :api do
+    namespace :v1 do
+      resources :projects
+    end
+  end
+  
   # nested resource
   resources :projects do
     resources :tickets do
