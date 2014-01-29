@@ -35,5 +35,36 @@ describe "/api/v1/projects", :type => :api do
       end.should_not be_true
     end
     
+    it "xml" do
+      get "#{url}.xml", :token => token
+      response.body.should eql(Project.for(user).load.to_xml)
+      # nokogiri gem is used to parse xml
+      projects = Nokogiri::XML(response.body)
+      # we use css to find an element called name inside another called project
+      # then we check if the text equals the project name
+      projects.css("project name").text.should eql(project.name)
+    end   
   end
+  
+  context "creating a project" do
+    let(:url) {"/api/v1/projects"}
+    
+    it "successful json" do
+      post "#{url}.json", :token => token, :project => { :name => "Inspector" }
+      project = Project.find_by_name("Inspector")
+      route = "/api/v1/projects/#{project.id}"
+      
+      response.status.should eql(201)
+      response.headers["Location"].should eql(route)
+      response.body.should eql(project.to_json)
+    end
+    
+    it "unsuccessful json" do
+      post "#{url}.json", :token => token, :project => { :name => "" }
+      response.status.should eql(422)
+      errors = {"errors" => {"name" => ["can't be blank"]}}.to_json
+      response.body.should eql(errors)
+    end
+  end
+  
 end
