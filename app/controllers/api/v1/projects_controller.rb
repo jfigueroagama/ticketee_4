@@ -1,4 +1,5 @@
 class Api::V1::ProjectsController < Api::V1::BaseController
+  before_filter :authorize_admin!, :except => [:index, :show]
   # The response to the json request will be serialized json response
   # calling to_json in the response. Rails takes care of that do to
   # the respond_to :json in the Api::V1::BaseController
@@ -6,6 +7,15 @@ class Api::V1::ProjectsController < Api::V1::BaseController
     # We use the for scope defined in the Project model
     # We use load instead of all which is deprecated
     respond_with(Project.for(current_user).load)
+  end
+  
+  def show
+    # If a method is not defined but it is specified
+    # in ;methods options, it is ignored
+    # the last_ticket will be defined in the project
+    # model through the association with tickets
+    @project = Project.find(params[:id])
+    respond_with(@project, :methods => "last_ticket")
   end
   
   def create

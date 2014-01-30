@@ -49,6 +49,11 @@ describe "/api/v1/projects", :type => :api do
   context "creating a project" do
     let(:url) {"/api/v1/projects"}
     
+    before do
+      user.admin = true
+      user.save!
+    end
+    
     it "successful json" do
       post "#{url}.json", :token => token, :project => { :name => "Inspector" }
       project = Project.find_by_name("Inspector")
@@ -65,6 +70,24 @@ describe "/api/v1/projects", :type => :api do
       errors = {"errors" => {"name" => ["can't be blank"]}}.to_json
       response.body.should eql(errors)
     end
+  end
+  
+  context "showing a project with last ticket" do
+    let!(:project) { FactoryGirl.create(:project) }
+    let!(:ticket) { FactoryGirl.create(:ticket, project: project) }
+    let(:url) {"/api/v1/projects/#{project.id}"}  
+    
+    it "json" do
+      get "#{url}.json", :token => token
+      # the last_ticket method is defined on a project object
+      project_json = project.to_json(:methods => "last_ticket")
+      response.body.should eql(project_json)
+      response.status.should eql(200)
+      
+      project_response = JSON.parse(response.body)
+      ticket_title = project_response["last_ticket"]["title"]
+      ticket_title.should_not be_blank 
+    end 
   end
   
 end

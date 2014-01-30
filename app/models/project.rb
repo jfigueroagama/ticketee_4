@@ -15,4 +15,9 @@ class Project < ActiveRecord::Base
   scope :for, ->(user) do
     user.admin? ? Project.all : Project.viewable_by(user)
   end
+  
+  def last_ticket
+    # tickets is the method defined by the association between project -> tickets
+    tickets.last
+  end
 end
