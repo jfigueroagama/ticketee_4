@@ -1,5 +1,6 @@
 class Api::V1::ProjectsController < Api::V1::BaseController
   before_filter :authorize_admin!, :except => [:index, :show]
+  before_filter :set_project, :only => [:show, :update, :destroy]
   # The response to the json request will be serialized json response
   # calling to_json in the response. Rails takes care of that do to
   # the respond_to :json in the Api::V1::BaseController
@@ -14,7 +15,7 @@ class Api::V1::ProjectsController < Api::V1::BaseController
     # in ;methods options, it is ignored
     # the last_ticket will be defined in the project
     # model through the association with tickets
-    @project = Project.find(params[:id])
+    #@project = Project.find(params[:id])
     respond_with(@project, :methods => "last_ticket")
   end
   
@@ -35,10 +36,33 @@ class Api::V1::ProjectsController < Api::V1::BaseController
     end
   end
   
+  def update
+    # The update_attributes saves the object and returs 
+    # a valid object in the format we asked for (json)
+    # If the object fails validation, the status code
+    # returned will be 422 => Unprocessable entity and the
+    # response will contain the errors. If the object is valid
+    # but we get an empty response, we will get a status code 204
+    @project.update_attributes(project_params)
+    respond_with(@project)
+  end
+  
+  def destroy
+    @project.destroy
+    respond_with(@project)
+  end
+  
   private
   
   def project_params
     params.require(:project).permit(:name, :description)
+  end
+  
+  def set_project
+    @project = Project.for(current_user).find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    error = { :error => "The project you are looking for could not be found."}
+    respond_with(error, {:status => 404})
   end
   
 end

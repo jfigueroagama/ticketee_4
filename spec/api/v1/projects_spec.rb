@@ -90,4 +90,43 @@ describe "/api/v1/projects", :type => :api do
     end 
   end
   
+  context "updating a project" do
+    let(:url) { "/api/v1/projects/#{project.id}"}
+    before do
+      user.admin = true
+      user.save!
+    end
+    
+    it "successful json" do
+      put "#{url}.json", :token => token, :project => { name: "Not ticketee" }
+      
+      response.status.should eql(204)
+      response.body.should eql("")
+      
+      project.reload
+      project.name.should eql("Not ticketee")   
+    end
+    
+    it "unsuccessful json" do
+      put "#{url}.json", :token => token, :project => { name: "" }
+      
+      response.status.should eql(422)
+      errors = { :errors => {:name => ["can't be blank"]}}
+      response.body.should eql(errors.to_json)
+    end   
+  end
+  
+  context "deleting a project" do
+    let(:url) { "/api/v1/projects/#{project.id}"}
+    before do
+      user.admin = true
+      user.save!
+    end
+    
+    it "json" do
+      delete "#{url}.json", :token => token
+      response.status.should eql(204)
+    end
+  end
+  
 end
