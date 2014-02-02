@@ -25,6 +25,7 @@ describe User do
       
       expect(u).to_not be_valid
     end
+    
   end
   
   describe "authentication" do
@@ -50,6 +51,19 @@ describe User do
       u.save
       
       expect(u).to be_valid
+    end
+  end
+  
+  describe "requests count" do
+    it "request count to zero" do
+      user = FactoryGirl.create(:user)
+      user.update_attribute(:request_count, 42)
+      # This method resets the request_count for all users
+      # This is defined as a class method that we will run
+      # using a background job
+      User.reset_request_count!
+      user.reload
+      user.request_count.should eql(0)
     end
   end
 end

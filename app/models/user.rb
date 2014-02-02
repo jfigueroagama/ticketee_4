@@ -7,6 +7,11 @@ class User < ActiveRecord::Base
   
   validates :email, presence: true
   
+  # we define the reset_request_count! CLASS METHOD
+  def self.reset_request_count!
+    User.where("request_count > 0").update_all("request_count = 0")
+  end
+  
   # This overrides the to_s ruby method
   def to_s
     "#{email} (#{admin? ? "Admin":"User"})"
